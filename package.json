@@ -1,0 +1,15 @@
+{
+  "name": "excel-node",
+  "version": "1.0.0",
+  "description": "Manejo de excel con nodejs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Josue Tomalá",
+  "license": "ISC",
+  "dependencies": {
+    "dayjs": "^1.11.3",
+    "xlsx": "^0.18.5"
+  }
+}
