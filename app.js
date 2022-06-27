@@ -40,7 +40,7 @@ const dataFiltered = excelHandling.dataFilterByDateAttenction( dataFormatDate, d
 
 
 
-console.log(dataFiltered);
+excelHandling.jsonToExcel( dataFiltered, 'ALL(2021)' );
 
 
 
@@ -48,16 +48,7 @@ console.log(dataFiltered);
 
 
 
-// console.log(typeof fecha.FECHA_ATENCION)
-
-
 // const meses = fechaAtencion.map( fecha => console.log( new Date(fecha.FECHA_ATENCION) )  )
 
 
-// console.log(meses)
-
-// console.log( meses.map( mes => mes.getMonth() + 1 ) );
-// console.log( meses.map( mes => mes.getDate() ) );
-// console.log( meses.map( mes => mes.getFullYear() ) );
-
-// fs.writeFileSync( './src/data/prueba.json', JSON.stringify( fechaAtencion ) );
+// fs.writeFileSync( './src/data/prueba-final.json', JSON.stringify( dataFiltered ) );

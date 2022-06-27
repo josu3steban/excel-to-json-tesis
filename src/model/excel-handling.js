@@ -4,6 +4,7 @@ const fs = require('fs');
 const dayjs = require('dayjs');
 const customParseFormat = require('dayjs/plugin/customParseFormat');
 const localizedFormat = require('dayjs/plugin/localizedFormat');
+const { type } = require('os');
 dayjs.extend(customParseFormat);
 dayjs.extend(localizedFormat);
 
@@ -39,6 +40,30 @@ class ExcelHandling {
         return dataToJson;
         
 
+    }
+
+
+    jsonToExcel( data, sheetName = "" ) {
+
+
+        // Convertir los datos de json a excel
+        const workSheet = XLSX.utils.json_to_sheet( data );
+
+        const workbook = XLSX.utils.book_new();
+
+
+        XLSX.utils.book_append_sheet( workbook, workSheet, sheetName );
+
+        XLSX.writeFile(workbook, './src/data/prueba-fina.xlsx');
+
+        // XLSX.utils.book_append_sheet( workSheet, workbook, sheetName );
+
+        // const workbookSheet = dataToJson.Sheets[sheetName ?? ""];
+        // XLSX.utils.sheet_add_aoa( workbookSheet, [["Created "+new Date().toISOString()]], {origin:-1} );
+        
+
+        // XLSX.write( workbook, {bookType: 'xlsx', type:'buffer'});
+        
     }
 
 
@@ -112,7 +137,7 @@ class ExcelHandling {
 
         const dateTemp = [520, 693, 5733];
         
-        dateTemp.map( hc => {
+        hcPaciente.map( hc => {
 
 
             let months = [];
@@ -223,7 +248,7 @@ class ExcelHandling {
             // let cont = 1;
             
 
-            console.log(mostRepeatedMonth);
+            // console.log(mostRepeatedMonth);
 
 
             //iterar el objeto segun su key
@@ -246,7 +271,7 @@ class ExcelHandling {
                     if( patientMonthAttention === Number(key) ) {
 
 
-                        const { H_C_PACIENTE, TIPO_ATENCION, ESPECIALIDAD_CE, TIPO_CITA, FECHA_ATENCION, HORA_ATENCION, COD_DEP, DEPENDENCIA, COD_MED, NOM_MEDICO, TIPO_DIAG, Desc_Diagnóstico, Desc_Diagnóstico_Pres_1, Des_Diagnóstico_Pres_2, Des_Diagnóstico_Pres_3, desc_Diagnóstico_Def_1, Desc_Diagnóstico_Def_2, ...rest  } = patient;
+                        const { H_C_PACIENTE, TIPO_ATENCION, ESPECIALIDAD_CE, TIPO_CITA, FECHA_ATENCION, HORA_ATENCION, COD_DEP, DEPENDENCIA, COD_MED, NOM_MEDICO, TIPO_DIAG, Desc_Diagnóstico, Desc_Diagnóstico_Pres_1, Des_Diagnóstico_Pres_2, Des_Diagnóstico_Pres_3, desc_Diagnóstico_Def_1, Desc_Diagnóstico_Def_2 } = patient;
 
 
 
@@ -255,22 +280,22 @@ class ExcelHandling {
                             ...newDataPatient,
 
                             H_C_PACIENTE,
-                            // [`TIPO_ATENCION_ATENCION_${cont}`]           : TIPO_ATENCION,
-                            // [`ESPECIALIDAD_CE_ATENCION_${cont}`]         : ESPECIALIDAD_CE,
-                            // [`TIPO_CITA_ATENCION_${cont}`]               : TIPO_CITA,
-                            [`FECHA_ATENCION_ATENCION_${contAttention}`]             : FECHA_ATENCION,
-                            // [`HORA_ATENCION_ATENCION_${cont}`]           : HORA_ATENCION,
-                            // [`COD_DEP_ATENCION_${cont}`]                 : COD_DEP,
-                            // [`DEPENDENCIA_ATENCION_${cont}`]             : DEPENDENCIA,
-                            // [`COD_MED_ATENCION_${cont}`]                 : COD_MED,
-                            // [`NOM_MEDICO_ATENCION_${cont}`]              : NOM_MEDICO,
-                            // [`TIPO_DIAG_ATENCION_${cont}`]               : TIPO_DIAG,
-                            // [`Desc_Diagnostico_ATENCION_${cont}`]        : Desc_Diagnóstico,
-                            // [`Desc_Diagnostico_Pres_1_ATENCION_${cont}`] : Desc_Diagnóstico_Pres_1,
-                            // [`Des_Diagnostico_Pres_2_ATENCION_${cont}`]  : Des_Diagnóstico_Pres_2,
-                            // [`Des_Diagnostico_Pres_3_ATENCION_${cont}`]  : Des_Diagnóstico_Pres_3,
-                            // [`desc_Diagnostico_Def_1_ATENCION_${cont}`]  : desc_Diagnóstico_Def_1,
-                            // [`Desc_Diagnostico_Def_2_ATENCION_${cont}`]  : Desc_Diagnóstico_Def_2
+                            [`TIPO_ATENCION_ATENCION_${contAttention}`]           : TIPO_ATENCION,
+                            [`ESPECIALIDAD_CE_ATENCION_${contAttention}`]         : ESPECIALIDAD_CE,
+                            [`TIPO_CITA_ATENCION_${contAttention}`]               : TIPO_CITA,
+                            [`FECHA_ATENCION_ATENCION_${contAttention}`]          : FECHA_ATENCION,
+                            [`HORA_ATENCION_ATENCION_${contAttention}`]           : HORA_ATENCION,
+                            [`COD_DEP_ATENCION_${contAttention}`]                 : COD_DEP,
+                            [`DEPENDENCIA_ATENCION_${contAttention}`]             : DEPENDENCIA,
+                            [`COD_MED_ATENCION_${contAttention}`]                 : COD_MED,
+                            [`NOM_MEDICO_ATENCION_${contAttention}`]              : NOM_MEDICO,
+                            [`TIPO_DIAG_ATENCION_${contAttention}`]               : TIPO_DIAG,
+                            [`Desc_Diagnostico_ATENCION_${contAttention}`]        : Desc_Diagnóstico,
+                            [`Desc_Diagnostico_Pres_1_ATENCION_${contAttention}`] : Desc_Diagnóstico_Pres_1,
+                            [`Des_Diagnostico_Pres_2_ATENCION_${contAttention}`]  : Des_Diagnóstico_Pres_2,
+                            [`Des_Diagnostico_Pres_3_ATENCION_${contAttention}`]  : Des_Diagnóstico_Pres_3,
+                            [`desc_Diagnostico_Def_1_ATENCION_${contAttention}`]  : desc_Diagnóstico_Def_1,
+                            [`Desc_Diagnostico_Def_2_ATENCION_${contAttention}`]  : Desc_Diagnóstico_Def_2
 
                             // ...rest
                             
@@ -285,6 +310,20 @@ class ExcelHandling {
 
                 });
 
+
+                const dataTemp = groupPatient.find( fecha => {
+
+
+                    return (dayjs(fecha.FECHA_ATENCION, 'DD/MM/YYYY').month() + 1) === Number(key)
+                    
+                    
+                });
+
+
+                const { H_C_PACIENTE, TIPO_ATENCION, ESPECIALIDAD_CE, TIPO_CITA, FECHA_ATENCION, HORA_ATENCION, COD_DEP, DEPENDENCIA, COD_MED, NOM_MEDICO, TIPO_DIAG, Desc_Diagnóstico, Desc_Diagnóstico_Pres_1, Des_Diagnóstico_Pres_2, Des_Diagnóstico_Pres_3, desc_Diagnóstico_Def_1, Desc_Diagnóstico_Def_2, ...rest } = dataTemp;
+
+
+                newDataPatient = { ...newDataPatient, ...rest };
 
                 newData.push( newDataPatient );
                 
