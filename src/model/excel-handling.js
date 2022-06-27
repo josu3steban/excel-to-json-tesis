@@ -196,21 +196,16 @@ class ExcelHandling {
             list.sort( ( a, b ) => a - b );
 
             
-            // mostRepeatedMonthOrdered
-
-
-
-
             //del array de las veces que se repite cada mes, se saca el mayor de ellos
             // const mostRepeat = Math.max( ...list );
 
             //variable para guardar el numero del mes que más se repite
-            let mostRepeatKey;
+            // let mostRepeatKey;
 
             //obtiene la llave según el número mayor obtenido de las veces que se repite cada mes
             // Object.keys( mostRepeatedMonth ).forEach( key => {
 
-            //     //si el valor de la propiedad del objeto es igual al numero mayor de los meses que se repite 
+            //si el valor de la propiedad del objeto es igual al numero mayor de los meses que se repite 
             //     if( mostRepeatedMonth[key] === mostRepeat ) {
 
             //         mostRepeatKey = key;
@@ -224,41 +219,31 @@ class ExcelHandling {
 
             
             
-            let newDataPatient = {};
+            // let newDataPatient = {};
             // let cont = 1;
             
 
             console.log(mostRepeatedMonth);
 
 
-
+            //iterar el objeto segun su key
             Object.keys( mostRepeatedMonth ).forEach( key => {
 
+                //objeto para insertar las citas de un mismo mes
+                let newDataPatient = {};
+
+                //contador para concatenar a las propiedades indicando el numero de cita ==> propiedada_{numero_cita}
                 let contAttention = 1;
-                let contMonth = 1;
 
-                // console.log('MES KEY ===> ', key);
-
+                //recorrer el paciente con el cual se esta trabajando
                 groupPatient.map( patient => {
 
 
                     //formatear la fecha de la cita al formato dd/mm/aaaa
                     const patientMonthAttention = dayjs(patient.FECHA_ATENCION, 'DD/MM/YYYY').month() + 1;
 
-                    // console.log(`MES DEL PACIENTE ===> ${patient.H_C_PACIENTE} - ${patientMonthAttention}`);
-
-                    
+                    //si el mes de la cita es igual mes del array, para asi identificar todas las citad de cierto mes de forma dinamica mes_cita === 10 <== numero dinamico de cada mes que el paciente ha tenido una cita
                     if( patientMonthAttention === Number(key) ) {
-
-
-                        // console.log(`MES-PACIENTE ES IGUAL A MES DEL OBJETO CREADO => ${ patientMonthAttention} - ${ Number(key) }`)
-
-                        // console.log(`MES-PACIENTE ES IGUAL A MES DEL OBJETO CREADO => ${ patientMonthAttention === Number(key) }`)
-                        
-
-                        // console.log('MES IGUAL A KEY ===> ', patientMonthAttention);
-
-                        // console.log(`MES DEL PACIENTE ===> ${patientMonthAttention} - ${Number(key)}`);
 
 
                         const { H_C_PACIENTE, TIPO_ATENCION, ESPECIALIDAD_CE, TIPO_CITA, FECHA_ATENCION, HORA_ATENCION, COD_DEP, DEPENDENCIA, COD_MED, NOM_MEDICO, TIPO_DIAG, Desc_Diagnóstico, Desc_Diagnóstico_Pres_1, Des_Diagnóstico_Pres_2, Des_Diagnóstico_Pres_3, desc_Diagnóstico_Def_1, Desc_Diagnóstico_Def_2, ...rest  } = patient;
@@ -273,7 +258,7 @@ class ExcelHandling {
                             // [`TIPO_ATENCION_ATENCION_${cont}`]           : TIPO_ATENCION,
                             // [`ESPECIALIDAD_CE_ATENCION_${cont}`]         : ESPECIALIDAD_CE,
                             // [`TIPO_CITA_ATENCION_${cont}`]               : TIPO_CITA,
-                            [`FECHA_ATENCION_ATENCION_${key}_${contAttention}`]             : FECHA_ATENCION,
+                            [`FECHA_ATENCION_ATENCION_${contAttention}`]             : FECHA_ATENCION,
                             // [`HORA_ATENCION_ATENCION_${cont}`]           : HORA_ATENCION,
                             // [`COD_DEP_ATENCION_${cont}`]                 : COD_DEP,
                             // [`DEPENDENCIA_ATENCION_${cont}`]             : DEPENDENCIA,
@@ -298,118 +283,22 @@ class ExcelHandling {
                     }
 
 
-                    contMonth++;
-                    
-                    // console.log(newDataPatient);
-                    // newData.push( newDataPatient );
-                    
                 });
 
 
-                console.log(newDataPatient)
-
-                
-                // newData.push( newDataPatient );
-                
-                // console.log(newDataPatient);
-            });
-
-
-            // newData.push( newDataPatient );
-
-            console.log(newData);
-
-            // console.log('newDataPatient  ', newDataPatient );
-            
-            
-            
-            return;
-            
-
-            //groupPatient => Todas las citas de un paciente
-            //agrupar las citas segun fechas seguidas en un solo objeto
-            groupPatient.map( patient => {
-
-                //formatear la fecha de la cita al formato dd/mm/aaaa
-                const patientMonthAttention = dayjs(patient.FECHA_ATENCION, 'DD/MM/YYYY').month() + 1;
-
-                //si el mes de la cita es igual al del mes mas repetido
-                if( patientMonthAttention === Number(mostRepeatKey) ) {
-
-
-                    const { H_C_PACIENTE, TIPO_ATENCION, ESPECIALIDAD_CE, TIPO_CITA, FECHA_ATENCION, HORA_ATENCION, COD_DEP, DEPENDENCIA, COD_MED, NOM_MEDICO, TIPO_DIAG, Desc_Diagnóstico, Desc_Diagnóstico_Pres_1, Des_Diagnóstico_Pres_2, Des_Diagnóstico_Pres_3, desc_Diagnóstico_Def_1, Desc_Diagnóstico_Def_2, ...rest  } = patient;
-
-
-
-                    newDataPatient = {
-
-                        ...newDataPatient,
-
-                        H_C_PACIENTE,
-                        // [`TIPO_ATENCION_ATENCION_${cont}`]           : TIPO_ATENCION,
-                        // [`ESPECIALIDAD_CE_ATENCION_${cont}`]         : ESPECIALIDAD_CE,
-                        // [`TIPO_CITA_ATENCION_${cont}`]               : TIPO_CITA,
-                        [`FECHA_ATENCION_ATENCION_${cont}`]          : FECHA_ATENCION,
-                        // [`HORA_ATENCION_ATENCION_${cont}`]           : HORA_ATENCION,
-                        // [`COD_DEP_ATENCION_${cont}`]                 : COD_DEP,
-                        // [`DEPENDENCIA_ATENCION_${cont}`]             : DEPENDENCIA,
-                        // [`COD_MED_ATENCION_${cont}`]                 : COD_MED,
-                        // [`NOM_MEDICO_ATENCION_${cont}`]              : NOM_MEDICO,
-                        // [`TIPO_DIAG_ATENCION_${cont}`]               : TIPO_DIAG,
-                        // [`Desc_Diagnostico_ATENCION_${cont}`]        : Desc_Diagnóstico,
-                        // [`Desc_Diagnostico_Pres_1_ATENCION_${cont}`] : Desc_Diagnóstico_Pres_1,
-                        // [`Des_Diagnostico_Pres_2_ATENCION_${cont}`]  : Des_Diagnóstico_Pres_2,
-                        // [`Des_Diagnostico_Pres_3_ATENCION_${cont}`]  : Des_Diagnóstico_Pres_3,
-                        // [`desc_Diagnostico_Def_1_ATENCION_${cont}`]  : desc_Diagnóstico_Def_1,
-                        // [`Desc_Diagnostico_Def_2_ATENCION_${cont}`]  : Desc_Diagnóstico_Def_2
-
-                        // ...rest
-                        
-                    };
-
-
-                    cont++;
-
-                    // newData.push( newDataPatient );
-                    
-                    
-                }
-
-
-
-                // newData.push( newDataPatient );
-                
-                
+                newData.push( newDataPatient );
                 
             });
 
 
-
+            // console.log(newData);
 
             
-            
-            newData.push( newDataPatient );
-            
+        });
 
 
-            console.log(mostRepeatedMonth);
 
-
-            console.log(list);
-
-            console.log(mostRepeatKey);
-
-
-            console.log(newData);
-
-
-            // console.log(newData.length);
-
-
-        })
-
-
-        // console.log(newData);
+        return newData;
 
 
     }
