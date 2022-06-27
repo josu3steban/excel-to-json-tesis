@@ -136,13 +136,18 @@ class ExcelHandling {
             months.map( month => !monthsFilter.includes( month ) && monthsFilter.push( month ) );
 
 
-
+            //objeto para guardar los meses que ha tenido cita un paciente
             let mostRepeatedMonth = {};
 
 
+            //objeto para guardar los meses que ha tenido cita un paciente
+            let mostRepeatedMonthOrdered = {};
 
+
+            //crea un objeto con los meses en numero con el valor de 0
             monthsFilter.map( month => {
 
+                // mostRepeatedMonth.H_C_PACIENTE = hc;
                 mostRepeatedMonth[month] = 0;
                 
             });
@@ -150,7 +155,8 @@ class ExcelHandling {
 
 
 
-
+            //hace un conteo de los meses que tiene un paciente y los va sumando al objeto de los meses para tener el total de veces que se repite (total de citas que tiene en un mes )
+            //ejem. { 3: 1,  5: 4,  11: 9 } ==> ejemp. descriptivo { marzo: 1,  mayo: 4,  noviembre: 9 }
             months.map( (month ) => {
 
 
@@ -172,7 +178,8 @@ class ExcelHandling {
 
 
 
-
+            //array para guardar las veces que se repite cada mes
+            //ejem. [ 1,  4,  9 ]
             const list = [];
             
             Object.keys( mostRepeatedMonth ).forEach( key => {
@@ -186,34 +193,147 @@ class ExcelHandling {
             });
 
 
-            const mostRepeat = Math.max( ...list );
+            list.sort( ( a, b ) => a - b );
 
+            
+            // mostRepeatedMonthOrdered
+
+
+
+
+            //del array de las veces que se repite cada mes, se saca el mayor de ellos
+            // const mostRepeat = Math.max( ...list );
+
+            //variable para guardar el numero del mes que más se repite
             let mostRepeatKey;
+
+            //obtiene la llave según el número mayor obtenido de las veces que se repite cada mes
+            // Object.keys( mostRepeatedMonth ).forEach( key => {
+
+            //     //si el valor de la propiedad del objeto es igual al numero mayor de los meses que se repite 
+            //     if( mostRepeatedMonth[key] === mostRepeat ) {
+
+            //         mostRepeatKey = key;
+                    
+            //     }
+                
+                
+                
+            // });
+
+
+            
+            
+            let newDataPatient = {};
+            // let cont = 1;
+            
+
+            console.log(mostRepeatedMonth);
+
+
 
             Object.keys( mostRepeatedMonth ).forEach( key => {
 
+                let contAttention = 1;
+                let contMonth = 1;
 
-                if( mostRepeatedMonth[key] === mostRepeat ) {
+                // console.log('MES KEY ===> ', key);
 
-                    mostRepeatKey = key;
+                groupPatient.map( patient => {
+
+
+                    //formatear la fecha de la cita al formato dd/mm/aaaa
+                    const patientMonthAttention = dayjs(patient.FECHA_ATENCION, 'DD/MM/YYYY').month() + 1;
+
+                    // console.log(`MES DEL PACIENTE ===> ${patient.H_C_PACIENTE} - ${patientMonthAttention}`);
+
                     
-                }
+                    if( patientMonthAttention === Number(key) ) {
+
+
+                        // console.log(`MES-PACIENTE ES IGUAL A MES DEL OBJETO CREADO => ${ patientMonthAttention} - ${ Number(key) }`)
+
+                        // console.log(`MES-PACIENTE ES IGUAL A MES DEL OBJETO CREADO => ${ patientMonthAttention === Number(key) }`)
+                        
+
+                        // console.log('MES IGUAL A KEY ===> ', patientMonthAttention);
+
+                        // console.log(`MES DEL PACIENTE ===> ${patientMonthAttention} - ${Number(key)}`);
+
+
+                        const { H_C_PACIENTE, TIPO_ATENCION, ESPECIALIDAD_CE, TIPO_CITA, FECHA_ATENCION, HORA_ATENCION, COD_DEP, DEPENDENCIA, COD_MED, NOM_MEDICO, TIPO_DIAG, Desc_Diagnóstico, Desc_Diagnóstico_Pres_1, Des_Diagnóstico_Pres_2, Des_Diagnóstico_Pres_3, desc_Diagnóstico_Def_1, Desc_Diagnóstico_Def_2, ...rest  } = patient;
+
+
+
+                        newDataPatient = {
+
+                            ...newDataPatient,
+
+                            H_C_PACIENTE,
+                            // [`TIPO_ATENCION_ATENCION_${cont}`]           : TIPO_ATENCION,
+                            // [`ESPECIALIDAD_CE_ATENCION_${cont}`]         : ESPECIALIDAD_CE,
+                            // [`TIPO_CITA_ATENCION_${cont}`]               : TIPO_CITA,
+                            [`FECHA_ATENCION_ATENCION_${key}_${contAttention}`]             : FECHA_ATENCION,
+                            // [`HORA_ATENCION_ATENCION_${cont}`]           : HORA_ATENCION,
+                            // [`COD_DEP_ATENCION_${cont}`]                 : COD_DEP,
+                            // [`DEPENDENCIA_ATENCION_${cont}`]             : DEPENDENCIA,
+                            // [`COD_MED_ATENCION_${cont}`]                 : COD_MED,
+                            // [`NOM_MEDICO_ATENCION_${cont}`]              : NOM_MEDICO,
+                            // [`TIPO_DIAG_ATENCION_${cont}`]               : TIPO_DIAG,
+                            // [`Desc_Diagnostico_ATENCION_${cont}`]        : Desc_Diagnóstico,
+                            // [`Desc_Diagnostico_Pres_1_ATENCION_${cont}`] : Desc_Diagnóstico_Pres_1,
+                            // [`Des_Diagnostico_Pres_2_ATENCION_${cont}`]  : Des_Diagnóstico_Pres_2,
+                            // [`Des_Diagnostico_Pres_3_ATENCION_${cont}`]  : Des_Diagnóstico_Pres_3,
+                            // [`desc_Diagnostico_Def_1_ATENCION_${cont}`]  : desc_Diagnóstico_Def_1,
+                            // [`Desc_Diagnostico_Def_2_ATENCION_${cont}`]  : Desc_Diagnóstico_Def_2
+
+                            // ...rest
+                            
+                        };
+
+
+                        contAttention++;
+
+                        
+                    }
+
+
+                    contMonth++;
+                    
+                    // console.log(newDataPatient);
+                    // newData.push( newDataPatient );
+                    
+                });
+
+
+                console.log(newDataPatient)
+
                 
+                // newData.push( newDataPatient );
                 
-                
+                // console.log(newDataPatient);
             });
 
 
+            // newData.push( newDataPatient );
 
+            console.log(newData);
 
-            let newDataPatient = {};
-            let cont = 1;
+            // console.log('newDataPatient  ', newDataPatient );
+            
+            
+            
+            return;
+            
 
             //groupPatient => Todas las citas de un paciente
+            //agrupar las citas segun fechas seguidas en un solo objeto
             groupPatient.map( patient => {
 
+                //formatear la fecha de la cita al formato dd/mm/aaaa
                 const patientMonthAttention = dayjs(patient.FECHA_ATENCION, 'DD/MM/YYYY').month() + 1;
 
+                //si el mes de la cita es igual al del mes mas repetido
                 if( patientMonthAttention === Number(mostRepeatKey) ) {
 
 
@@ -262,6 +382,10 @@ class ExcelHandling {
                 
                 
             });
+
+
+
+
             
             
             newData.push( newDataPatient );
@@ -278,14 +402,14 @@ class ExcelHandling {
 
             console.log(newData);
 
-            // console.log(newData.length);
 
+            // console.log(newData.length);
 
 
         })
 
 
-        console.log(newData.length);
+        // console.log(newData);
 
 
     }
