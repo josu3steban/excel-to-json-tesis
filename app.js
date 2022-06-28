@@ -39,9 +39,9 @@ const dataFiltered = excelHandling.dataFilterByDateAttenction( dataFormatDate, d
 
 
 
-console.log('FIN DE EJECUCIÓN');
+// console.log(dataFiltered);
 
-return;
+// return;
 
 
 excelHandling.jsonToExcel( dataFiltered, 'ALL(2021)' );
