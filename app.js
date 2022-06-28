@@ -34,10 +34,14 @@ const dataFormatDate = dateFormat( dataToJson );
 // fs.writeFileSync( './src/data/prueba-format-fecha.json', JSON.stringify( dataFormatDate ) );
 
 
-
 //datos filtrados. Varias filas de un mismo paciente agrupas en una fila según las fechas cercanas. Se envia como argumentos el json de los datos y los codigos de pacientes
 const dataFiltered = excelHandling.dataFilterByDateAttenction( dataFormatDate, dataByPatientCodes );
 
+
+
+console.log('FIN DE EJECUCIÓN');
+
+return;
 
 
 excelHandling.jsonToExcel( dataFiltered, 'ALL(2021)' );
