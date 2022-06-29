@@ -130,7 +130,7 @@ class ExcelHandling {
 
         const dateTemp = [520, 5733, 2412];
         
-        hcPaciente.map( hc => {
+        dateTemp.map( hc => {
 
 
             const groupPatient = data.filter( filtro => filtro.H_C_PACIENTE === hc );
@@ -168,7 +168,7 @@ class ExcelHandling {
 
                     const auxDays = [];
 
-                    //**********SACAR DÍAS**********
+                    //**********OBTENER EL MES ACTUAL**********
                     const patientByMonth = patientByYear.filter( pby => (dayjs(pby.FECHA_ATENCION,'DD/MM/YYYY').month() + 1) === month );
 
                     patientByMonth.map( pbm => auxDays.push( dayjs( pbm.FECHA_ATENCION, 'DD/MM/YYYY').date() ) );
@@ -186,12 +186,27 @@ class ExcelHandling {
                     days.forEach( day => {
 
 
-                        //objeto para insertar las citas de un mismo mes
-                        // let newDataPatient = {};
+                        const auxHours = [];
+
+                        //**********OBTENER LOS DIAS DEL MES ACTUAL**********
+                        const patientByDays = patientByMonth.filter( pbm => (dayjs(pbm.FECHA_ATENCION,'DD/MM/YYYY').date()) === day );
+
+                        patientByDays.map( pbd => {
+
+                            const patientDays = (pbd.HORA_ATENCION * 24).toFixed(2);
+                            let hours = Math.floor(patientDays);
+                            // let minuto = ( ( Number(patientHours.toString().split('.')[1]) * 60) / 100).toFixed() || 0;
+
+                            auxHours.push( hours );
+                            
+                        });
+
+                        const hours = sortDatesWithoutRepeating( auxHours );
 
 
+
+                        //sacar la fecha inicial y la fecha final de la cita
                         patientByMonth.map( patientMonth => {
-
 
                             fecha = dayjs(patientMonth.FECHA_ATENCION,'DD/MM/YYYY');
 
@@ -210,44 +225,98 @@ class ExcelHandling {
         
                                     if(!fechaFinal.isAfter( fecha )) fechaFinal = fecha
                                 }
-        
-        
-                                const { H_C_PACIENTE, TIPO_ATENCION, ESPECIALIDAD_CE, TIPO_CITA, FECHA_ATENCION, HORA_ATENCION, COD_DEP, DEPENDENCIA, COD_MED, NOM_MEDICO, TIPO_DIAG, Desc_Diagnóstico, Desc_Diagnóstico_Pres_1, Des_Diagnóstico_Pres_2, Des_Diagnóstico_Pres_3, desc_Diagnóstico_Def_1, Desc_Diagnóstico_Def_2 } = patientMonth;
                                 
-
-                                newDataPatient = {
-
-                                    ...newDataPatient,
-        
-                                    H_C_PACIENTE,
-                                    ['FECHA_ATENCION_INICIAL']          : fechaInicial.format('DD/MM/YYYY'),
-                                    ['FECHA_ATENCION_FINAL']            : fechaFinal.format('DD/MM/YYYY'),
-        
-                                    [`TIPO_ATENCION_ATENCION_${contAttention}`]           : TIPO_ATENCION,
-                                    [`ESPECIALIDAD_CE_ATENCION_${contAttention}`]         : ESPECIALIDAD_CE,
-                                    [`TIPO_CITA_ATENCION_${contAttention}`]               : TIPO_CITA,
-                                    [`FECHA_ATENCION_ATENCION_${contAttention}`]          : FECHA_ATENCION,
-                                    [`HORA_ATENCION_ATENCION_${contAttention}`]           : HORA_ATENCION,
-                                    [`COD_DEP_ATENCION_${contAttention}`]                 : COD_DEP,
-                                    [`DEPENDENCIA_ATENCION_${contAttention}`]             : DEPENDENCIA,
-                                    [`COD_MED_ATENCION_${contAttention}`]                 : COD_MED,
-                                    [`NOM_MEDICO_ATENCION_${contAttention}`]              : NOM_MEDICO,
-                                    [`TIPO_DIAG_ATENCION_${contAttention}`]               : TIPO_DIAG,
-                                    [`Desc_Diagnostico_ATENCION_${contAttention}`]        : Desc_Diagnóstico,
-                                    [`Desc_Diagnostico_Pres_1_ATENCION_${contAttention}`] : Desc_Diagnóstico_Pres_1,
-                                    [`Des_Diagnostico_Pres_2_ATENCION_${contAttention}`]  : Des_Diagnóstico_Pres_2,
-                                    [`Des_Diagnostico_Pres_3_ATENCION_${contAttention}`]  : Des_Diagnóstico_Pres_3,
-                                    [`desc_Diagnostico_Def_1_ATENCION_${contAttention}`]  : desc_Diagnóstico_Def_1,
-                                    [`Desc_Diagnostico_Def_2_ATENCION_${contAttention}`]  : Desc_Diagnóstico_Def_2
-        
-                                    // ...rest
-                                    
-                                };
-                                
-                                
-                                contAttention++;
                             }
+                            
+                        });
+                        
+                        // console.log('***********************************');
+                        // console.log('ARREGLO DE HORAS 0RDENADOS', hours);
 
+
+                        hours.forEach( hour => {
+
+                            const auxMinutes = [];
+
+                            //**********OBTENER LOS DIAS DEL MES ACTUAL**********
+                            const patientByHour = patientByDays.filter( pbd => Math.floor( (pbd.HORA_ATENCION * 24).toFixed(2) ) === hour );
+
+                            patientByHour.map( pbh => {
+    
+                                const patientHour = (pbh.HORA_ATENCION * 24).toFixed(2);
+                                // let hours = Math.floor(patientHour);
+                                let minutes = ( ( Number(patientHour.toString().split('.')[1]) * 60) / 100).toFixed() || 0;
+                                minutes = minutes.padStart(2,0);
+    
+                                auxMinutes.push( Number(minutes) );
+
+                            });
+    
+                            
+                            const minutes = sortDatesWithoutRepeating( auxMinutes );
+
+                            // console.log('ARREGLO DE MINUTOS 0RDENADOS', minutes);
+
+                            minutes.forEach( minute => {
+
+                                //objeto para insertar las citas de un mismo mes
+                                // let newDataPatient = {};
+
+                                patientByHour.map( patientHour => {
+
+                                    let auxPatientHour = (patientHour.HORA_ATENCION * 24).toFixed(2);
+                                    auxPatientHour = ( (Number(auxPatientHour.toString().split('.')[1]) * 60) / 100).toFixed() || 0;
+                                    auxPatientHour = auxPatientHour.padStart(2.0);
+
+
+                                    // console.log(`${Number(auxPatientHour)} === ${minute}`)
+                                    // console.log(`${Number(auxPatientHour) === minute}`)
+
+                                    if( Number(auxPatientHour) === minute ) {
+
+
+                                        const { H_C_PACIENTE, TIPO_ATENCION, ESPECIALIDAD_CE, TIPO_CITA, FECHA_ATENCION, HORA_ATENCION, COD_DEP, DEPENDENCIA, COD_MED, NOM_MEDICO, TIPO_DIAG, Desc_Diagnóstico, Desc_Diagnóstico_Pres_1, Des_Diagnóstico_Pres_2, Des_Diagnóstico_Pres_3, desc_Diagnóstico_Def_1, Desc_Diagnóstico_Def_2 } = patientHour;
+                                        
+
+                                        newDataPatient = {
+
+                                            ...newDataPatient,
+                
+                                            H_C_PACIENTE,
+                                            ['FECHA_ATENCION_INICIAL']          : fechaInicial.format('DD/MM/YYYY'),
+                                            ['FECHA_ATENCION_FINAL']            : fechaFinal.format('DD/MM/YYYY'),
+                
+                                            // [`TIPO_ATENCION_ATENCION_${contAttention}`]           : TIPO_ATENCION,
+                                            // [`ESPECIALIDAD_CE_ATENCION_${contAttention}`]         : ESPECIALIDAD_CE,
+                                            // [`TIPO_CITA_ATENCION_${contAttention}`]               : TIPO_CITA,
+                                            [`FECHA_ATENCION_ATENCION_${contAttention}`]          : FECHA_ATENCION,
+                                            [`HORA_ATENCION_ATENCION_${contAttention}`]           : HORA_ATENCION,
+                                            // [`COD_DEP_ATENCION_${contAttention}`]                 : COD_DEP,
+                                            // [`DEPENDENCIA_ATENCION_${contAttention}`]             : DEPENDENCIA,
+                                            // [`COD_MED_ATENCION_${contAttention}`]                 : COD_MED,
+                                            // [`NOM_MEDICO_ATENCION_${contAttention}`]              : NOM_MEDICO,
+                                            // [`TIPO_DIAG_ATENCION_${contAttention}`]               : TIPO_DIAG,
+                                            // [`Desc_Diagnostico_ATENCION_${contAttention}`]        : Desc_Diagnóstico,
+                                            // [`Desc_Diagnostico_Pres_1_ATENCION_${contAttention}`] : Desc_Diagnóstico_Pres_1,
+                                            // [`Des_Diagnostico_Pres_2_ATENCION_${contAttention}`]  : Des_Diagnóstico_Pres_2,
+                                            // [`Des_Diagnostico_Pres_3_ATENCION_${contAttention}`]  : Des_Diagnóstico_Pres_3,
+                                            // [`desc_Diagnostico_Def_1_ATENCION_${contAttention}`]  : desc_Diagnóstico_Def_1,
+                                            // [`Desc_Diagnostico_Def_2_ATENCION_${contAttention}`]  : Desc_Diagnóstico_Def_2
+                
+                                            // ...rest
+                                            
+                                        };
+                                        
+                                        
+                                        contAttention++;
+                                    }
+
+                                });
+
+                                
+                            });
+
+                            
                         });
                         
 
@@ -277,7 +346,7 @@ class ExcelHandling {
             
         });
 
-        // console.log(newData);
+        console.log(newData);
         
         return newData;
 
