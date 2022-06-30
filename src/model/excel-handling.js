@@ -130,7 +130,7 @@ class ExcelHandling {
 
         const dateTemp = [520, 5733, 2412];
         
-        dateTemp.map( hc => {
+        hcPaciente.map( hc => {
 
 
             const groupPatient = data.filter( filtro => filtro.H_C_PACIENTE === hc );
@@ -286,22 +286,22 @@ class ExcelHandling {
                                             ['FECHA_ATENCION_INICIAL']          : fechaInicial.format('DD/MM/YYYY'),
                                             ['FECHA_ATENCION_FINAL']            : fechaFinal.format('DD/MM/YYYY'),
                 
-                                            // [`TIPO_ATENCION_ATENCION_${contAttention}`]           : TIPO_ATENCION,
-                                            // [`ESPECIALIDAD_CE_ATENCION_${contAttention}`]         : ESPECIALIDAD_CE,
-                                            // [`TIPO_CITA_ATENCION_${contAttention}`]               : TIPO_CITA,
+                                            [`TIPO_ATENCION_ATENCION_${contAttention}`]           : TIPO_ATENCION,
+                                            [`ESPECIALIDAD_CE_ATENCION_${contAttention}`]         : ESPECIALIDAD_CE,
+                                            [`TIPO_CITA_ATENCION_${contAttention}`]               : TIPO_CITA,
                                             [`FECHA_ATENCION_ATENCION_${contAttention}`]          : FECHA_ATENCION,
                                             [`HORA_ATENCION_ATENCION_${contAttention}`]           : HORA_ATENCION,
-                                            // [`COD_DEP_ATENCION_${contAttention}`]                 : COD_DEP,
-                                            // [`DEPENDENCIA_ATENCION_${contAttention}`]             : DEPENDENCIA,
-                                            // [`COD_MED_ATENCION_${contAttention}`]                 : COD_MED,
-                                            // [`NOM_MEDICO_ATENCION_${contAttention}`]              : NOM_MEDICO,
-                                            // [`TIPO_DIAG_ATENCION_${contAttention}`]               : TIPO_DIAG,
-                                            // [`Desc_Diagnostico_ATENCION_${contAttention}`]        : Desc_Diagnóstico,
-                                            // [`Desc_Diagnostico_Pres_1_ATENCION_${contAttention}`] : Desc_Diagnóstico_Pres_1,
-                                            // [`Des_Diagnostico_Pres_2_ATENCION_${contAttention}`]  : Des_Diagnóstico_Pres_2,
-                                            // [`Des_Diagnostico_Pres_3_ATENCION_${contAttention}`]  : Des_Diagnóstico_Pres_3,
-                                            // [`desc_Diagnostico_Def_1_ATENCION_${contAttention}`]  : desc_Diagnóstico_Def_1,
-                                            // [`Desc_Diagnostico_Def_2_ATENCION_${contAttention}`]  : Desc_Diagnóstico_Def_2
+                                            [`COD_DEP_ATENCION_${contAttention}`]                 : COD_DEP,
+                                            [`DEPENDENCIA_ATENCION_${contAttention}`]             : DEPENDENCIA,
+                                            [`COD_MED_ATENCION_${contAttention}`]                 : COD_MED,
+                                            [`NOM_MEDICO_ATENCION_${contAttention}`]              : NOM_MEDICO,
+                                            [`TIPO_DIAG_ATENCION_${contAttention}`]               : TIPO_DIAG,
+                                            [`Desc_Diagnostico_ATENCION_${contAttention}`]        : Desc_Diagnóstico,
+                                            [`Desc_Diagnostico_Pres_1_ATENCION_${contAttention}`] : Desc_Diagnóstico_Pres_1,
+                                            [`Des_Diagnostico_Pres_2_ATENCION_${contAttention}`]  : Des_Diagnóstico_Pres_2,
+                                            [`Des_Diagnostico_Pres_3_ATENCION_${contAttention}`]  : Des_Diagnóstico_Pres_3,
+                                            [`desc_Diagnostico_Def_1_ATENCION_${contAttention}`]  : desc_Diagnóstico_Def_1,
+                                            [`Desc_Diagnostico_Def_2_ATENCION_${contAttention}`]  : Desc_Diagnóstico_Def_2
                 
                                             // ...rest
                                             
